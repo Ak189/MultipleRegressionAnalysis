@@ -1,0 +1,44 @@
+#Define the values of the predictor variables X1, X2
+X1 <- c(-1,-1,0,1,1)
+X2 <- c(-1,0,0,0,1)
+#Define the dependent variables
+Y <- c(7.2, 8.1, 9.8, 12.3, 12.9)
+
+#Now we have to test the hypothesis H0: beta1 = 2*beta2 vs beta1 != 2*beta2
+#The new equation would be Y = beta0 + 2*X1*beta2 + X2*beta2 + epsilon
+# Y = beta0 + (2*X1 + X2)beta2 + epsilon
+#Z = (1, 2*X1 + X2)
+
+Z <- matrix(c(1,1,1,1,1,-3,-2,0,-2,-3), ncol = 2)
+
+#Solving the alpha
+alpha <- solve(t(Z) %*% Z) %*% (t(Z) %*% Y)
+alpha
+
+#Calculating the value of new Sum of squared of errors
+SSE_new <- t(Y)%*%Y - (t(alpha)%*%t(Z))%*%Y
+SSE_new
+
+#Sum of square of errors given
+SSE <- 0.107
+
+#Dof is defined in the question and there is only one restriction hence q = 1
+p <- 2
+q <- 1
+
+#Calculating the F-test
+F_test_stat <- ((SSE_new - SSE) / q) / (SSE / (n - p - 1))
+F_test_stat
+
+# Setting significance level
+alpha_level <- 0.05
+
+# Calculate critical value
+critical_value <- qf(1 - alpha_level, q, n - p - 1, lower.tail = FALSE)
+critical_value
+
+#Printing the result
+if (F_test_stat > critical_value) { cat("Reject the null hypothesis")
+} else {
+  cat("Do not reject the null hypothesis")
+}
