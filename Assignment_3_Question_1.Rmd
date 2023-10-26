@@ -1,0 +1,47 @@
+---
+title: "Assignment_3_Question_1"
+author: "Akash Gupta"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+## Problem 1.
+
+```{r Problem 1}
+library(faraway)
+#Printing out the savings data and checking its structure
+savings
+str(savings)
+
+#Fitting the linear model with for the predictor variables pop15, pop75, dpi, ddpi
+model_1 <- lm(sr ~ pop15 + pop75 + dpi + ddpi, data = savings)
+summary(model_1)
+
+#Total sum of squares
+sum((savings$sr - mean(savings$sr))^2)
+#Residual sum of squares
+sum(model_1$res^2)
+#F-test
+((983.63 - 650.71) / 4) / (650.706/45)
+#P-value
+1 - pf(5.7558,4,45)
+#As the p-value is very less and equal to 0.0007902633, we can reject the null hypothesis 
+#at a significance level of 0.1
+
+#b
+#beta(pop15) = beta(pop75) if it is true for a significance level of 0.05;
+
+model_2 <- lm(sr ~ I(pop15 + pop75) + dpi + ddpi, data = savings)
+anova(model_2, model_1)
+
+```
+
+```{Problem 1(b)}
+#b
+#beta(pop15) = beta(pop75) if it is true for a significance level of 0.05;
+
+model_2 <- lm(sr ~ I(pop15 + pop75) + dpi + ddpi, data = savings)
+anova(model_2, model_1)
+```
+#The p-values comes out be 0.2146 for the combined model hence we can't reject the null hypothesis
+#at a significance level of 0.05.
