@@ -2,10 +2,31 @@ library(faraway)
 library(ggplot2)
 library(dplyr)
 
-head(savings)     # Display the first few rows of the dataset
-summary(savings)  # Display a summary of the dataset
-str(savings)      # Display the structure of the dataset
+#Printing out the savings data and checking its structure
+savings
+str(savings)
 
-model <- lm(sr ~ pop15 + pop75 + dpi + ddpi, data = savings)
+#Fitting the linear model with for the predictor variables pop15, pop75, dpi, ddpi
+model_1 <- lm(sr ~ pop15 + pop75 + dpi + ddpi, data = savings)
+summary(model_1)
 
-summary(model)
+#Total sum of squares
+sum((savings$sr - mean(savings$sr))^2)
+#Residual sum of squares
+sum(model_1$res^2)
+#F-test
+((983.63 - 650.71) / 4) / (650.706/45)
+#P-value
+1 - pf(5.7558,4,45)
+#As the p-value is very less and equal to 0.0007902633, we can reject the null hypothesis 
+#at a significance level of 0.1
+
+#b
+#β(pop15) = β(pop75) if it is true for a significance level of 0.05;
+
+model_2 <- lm(sr ~ I(pop15 + pop75) + dpi + ddpi, data = savings)
+anova(model_2, model_1)
+
+#The p-values comes out be 0.2146 for the combined model hence we can't reject the null hypothesis
+#at a significance level of 0.05.
+
